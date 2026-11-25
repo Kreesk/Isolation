@@ -83,13 +83,13 @@ MonoBehaviour:
     m_Value: {x: 800, y: 600}
   UseMaxFPS:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   RefreshRate:
     m_OverrideState: 1
     m_Value: 60
   DecayRate:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   EnableInterlacedRendering:
     m_OverrideState: 1
     m_Value: 0

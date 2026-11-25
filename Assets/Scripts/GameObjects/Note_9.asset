@@ -23,6 +23,9 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   _fear: 15
+  _jumpscareType:
+    _id: 0
+    jumpscareType: 3
   references:
     version: 2
     RefIds: []

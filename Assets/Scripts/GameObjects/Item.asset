@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: Item
   m_EditorClassIdentifier: Assembly-CSharp::ItemWeight
   ItemName: bottle
-  Weight: 1
+  Weight: 0.5
+  ALotOfGarbage: 0
+  Phase: 0

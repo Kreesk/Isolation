@@ -3672,7 +3672,7 @@ MonoBehaviour:
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
   m_Cameras: []
-  m_RendererIndex: 0
+  m_RendererIndex: 1
   m_VolumeLayerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -5561,7 +5561,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RawImage
   m_Material: {fileID: 0}
-  m_Color: {r: 0.13962269, g: 0.13962269, b: 0.13962269, a: 0.8627451}
+  m_Color: {r: 0.09803922, g: 0.09803922, b: 0.09803922, a: 0.8627451}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5950,6 +5950,7 @@ MonoBehaviour:
     _volume: {fileID: 0}
     _hand: {fileID: 0}
     _garbage: {fileID: 0}
+    _fullGarbage: {fileID: 0}
     _orientation: {fileID: 0}
     _headBobing: {fileID: 0}
     _interactRay: 2
