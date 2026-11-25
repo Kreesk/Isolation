@@ -20,6 +20,8 @@ public class PlayerUI : MonoBehaviour
     private PaperRefs _paper;
     private EndingRefs _endingRefs;
     private MenuRefs _menuRefs;
+    private MapRefs _mapRefs;
+    private ScoreRefs _scoreRefs;
 
 
     private PlayerInteract _interact;
@@ -43,6 +45,7 @@ public class PlayerUI : MonoBehaviour
     private TextMeshProUGUI _scoreTotalPaperCollected;
     private TextMeshProUGUI _scoreTotalCollected;
     private TextMeshProUGUI _scoreDay;
+    private TextMeshProUGUI _fearStateText;
 
     
     private TextMeshProUGUI _items;
@@ -80,6 +83,7 @@ public class PlayerUI : MonoBehaviour
     private TextMeshProUGUI _currentStampText;
     private LocalizedString _currentLocalizedEnding;
     private LocalizedString _currentStampLocalized;
+    private LocalizedString _currentFearStateLocalized;
 
     private bool _allCollected;
     private bool _quotaCollected;
@@ -108,12 +112,14 @@ public class PlayerUI : MonoBehaviour
         _paper = ui.Paper;
         _endingRefs = ui.Ending;
         _menuRefs = ui.Menu;
+        _mapRefs = ui.Map;
+        _scoreRefs = ui.Scores;
 
         _timerCounter = ui.Timer.Counter; _timerText = ui.Timer.Text;
         _interaction = ui.Messages.MessageObject;  _hold = ui.Messages.Hold; _message = ui.Messages;
         _staminaImage = ui.Player.Stamina;
-        _scoreTotal = ui.Scores.ScoreTotal; _scoreDay = ui.Scores.ScoreDay; _scoreTotalCollected = ui.Scores.ScoreTotalCollected; _scoreTotalPaperCollected = ui.Scores.ScoreTotalPaperCollected;
-        _items = ui.Map.TotalItems; _spawnLocation = ui.Map.Spawn; _garbageTexture = ui.Map.GarbageTexture; _heartBeating = ui.Map.HeartBeating; _system = ui.Map.System; _startGameCanvas = ui.Map.StartCanvas; _durationStart = ui.Map.Duration;
+        _scoreTotal = _scoreRefs.ScoreTotal; _scoreDay = _scoreRefs.ScoreDay; _scoreTotalCollected = _scoreRefs.ScoreTotalCollected; _scoreTotalPaperCollected = _scoreRefs.ScoreTotalPaperCollected; _fearStateText = _scoreRefs.FearStateText;
+        _items = _mapRefs.TotalItems; _spawnLocation = _mapRefs.Spawn; _garbageTexture = _mapRefs.GarbageTexture; _heartBeating = ui.Map.HeartBeating; _system =_mapRefs.System; _startGameCanvas = _mapRefs.StartCanvas; _durationStart = _mapRefs.Duration;
         _paper.SetCurrent(0);
         _endingPanel = _endingRefs.EndingPanel; _currentEndingText = _endingRefs.CurrentText; _currentStampText = _endingRefs.CurrentStampText; _endingStampPanel = ui.Ending.EndingStampPanel;
         _tutorialPanel = ui.Tutorial.Panel; _tutorial = ui.Tutorial.Text; _tutorials = ui.Tutorial.Prompts;
@@ -135,6 +141,7 @@ public class PlayerUI : MonoBehaviour
 
         _fear.OnFearChange += GainHeart;
         _fear.FearDrained += DrainHeart;
+        _fear.OnFearStateChange += ShowStateText;
 
         if (_locator != null)
         {
@@ -175,6 +182,7 @@ public class PlayerUI : MonoBehaviour
         {
             _fear.OnFearChange -= GainHeart; 
             _fear.FearDrained -= DrainHeart;
+            _fear.OnFearStateChange -= ShowStateText;
         }
         _startGameTween.Stop();
     }
@@ -530,11 +538,34 @@ public class PlayerUI : MonoBehaviour
         }
     }
 
+    public void ClearFearStateText()
+    {
+        if(_currentFearStateLocalized != null)
+        {
+            _currentFearStateLocalized.StringChanged -= LocalizedFearState;
+            _currentFearStateLocalized = null;
+        }
+    }
+
+    public void ShowStateText(FearState state)
+    {
+        ClearFearStateText();
+
+        LocalizedString str = _scoreRefs.GetFearState(state);
+        if(str != null)
+        {
+            _currentFearStateLocalized = str;
+            _currentFearStateLocalized.StringChanged += LocalizedFearState;
+
+        }
+    }
+
     private void LocalizedInteractionText(string value) => _interaction.text = value;
     private void LocalizedPapperText(string v) => _paperText.text = v;
     private void LocalizedTutorialText(string v) => _tutorial.text = v;
     private void LocalizedEndingText(string v) => _currentEndingText.text = v;
     private void LocalizedStampEnding(string v) => _currentStampText.text = v;
+    private void LocalizedFearState(string v) => _fearStateText.text = v;
 
     private void SetPitch() => _heartBeating.pitch = _fear.FearNormalized >= 0.8f? 1.2f : _fear.FearNormalized >= 0.3f? 1f : 0.8f;
     private void SetVolume() => _heartBeating.volume = _fear.FearNormalized;

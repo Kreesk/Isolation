@@ -114,16 +114,38 @@ public sealed class MenuRefs
 [Serializable]
 public sealed class ScoreRefs
 {
+    
+[Serializable]
+private struct FearRefs
+{
+    [SerializeField] LocalizedString _total;
+    [SerializeField] FearState _state;
+
+    public LocalizedString Text => _total;
+    public FearState State => _state;
+}
+    [SerializeField] FearRefs[] _fears;
     [SerializeField] GameObject _scoreTotal;
 
     [SerializeField] TextMeshProUGUI _scoreTotalPaperCollected;
     [SerializeField] TextMeshProUGUI _scoreTotalCollected;
     [SerializeField] TextMeshProUGUI _scoreDay;
+    [SerializeField] TextMeshProUGUI _fearStateText;
 
     public GameObject ScoreTotal => _scoreTotal;
     public TextMeshProUGUI ScoreTotalCollected => _scoreTotalCollected;
     public TextMeshProUGUI ScoreTotalPaperCollected => _scoreTotalPaperCollected;
     public TextMeshProUGUI ScoreDay => _scoreDay;
+    public TextMeshProUGUI FearStateText => _fearStateText;
+
+    public LocalizedString GetFearState(FearState state)
+    {
+        for (int i = 0; i < _fears.Length; i++)
+            if(_fears[i].State == state)
+                return _fears[i].Text;
+
+        return null;
+    }
 }
 [Serializable]
 public sealed class MapRefs
