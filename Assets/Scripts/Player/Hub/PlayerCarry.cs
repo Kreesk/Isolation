@@ -33,7 +33,7 @@ public sealed class PlayerCarry
 
     public InteractResult Check(ItemWeight weight)
     {
-        if(MaxCollected)return InteractResult.FullBag;
+        if(weight.ALotOfGarbage?_currentBagCollected + _config.MaxBagStorage >= _config.MaxBagStorage : MaxCollected)return InteractResult.FullBag;
         return InteractResult.Success;
     }
     public InteractResult TryAdd(ItemWeight weight)
