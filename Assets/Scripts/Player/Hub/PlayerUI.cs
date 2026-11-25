@@ -14,6 +14,7 @@ public class PlayerUI : MonoBehaviour
     private PlayerStates _states;
     private PlayerCarry _carry;
     private PlayerConfig _config;
+    private PlayerSounds _sounds;
 
 
     private MessageRefs _message;
@@ -98,7 +99,7 @@ public class PlayerUI : MonoBehaviour
 
 
     [Inject]
-    public void Construct(PlayerStates states, PlayerMotor motor, PlayerCarry carry, PlayerHand hand, PlayerConfig config, UIConfig ui, PlayerInteract interact, PlayerFear fear, IInputModeSwitch inputMode, IPlayerInput input)
+    public void Construct(PlayerStates states, PlayerMotor motor, PlayerCarry carry, PlayerHand hand, PlayerConfig config, UIConfig ui, PlayerInteract interact, PlayerFear fear, PlayerSounds sounds, IInputModeSwitch inputMode, IPlayerInput input)
     {
         _states = states;
         _carry = carry;
@@ -114,6 +115,7 @@ public class PlayerUI : MonoBehaviour
         _menuRefs = ui.Menu;
         _mapRefs = ui.Map;
         _scoreRefs = ui.Scores;
+        _sounds = sounds;
 
         _timerCounter = ui.Timer.Counter; _timerText = ui.Timer.Text;
         _interaction = ui.Messages.MessageObject;  _hold = ui.Messages.Hold; _message = ui.Messages;
@@ -402,7 +404,7 @@ public class PlayerUI : MonoBehaviour
         _currentQuotaCollected = b;
         if (_day == 1)
         {
-            Debug.Log(b? "WELL DONE, YOU COLLECTED QUOTA" : "YOU SHOULD COLLECT GARBAGE!");
+            if(!b)_sounds.PlayAction(PlayerActions.QuotaNotCollected);
             _quotaCollected = true;
         }
         else
@@ -498,6 +500,9 @@ public class PlayerUI : MonoBehaviour
     private void ShowTutorialText(int index)
     {
         _tutorialPanel.SetActive(!_acceptedTutorial);
+
+
+        _sounds.PlayAction(PlayerActions.TutorialNotification);
         if(!_tutorialPanel.activeSelf)return;
 
         if(index == 3)

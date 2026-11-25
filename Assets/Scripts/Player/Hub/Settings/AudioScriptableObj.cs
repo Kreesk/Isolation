@@ -11,7 +11,6 @@ public class AudioScriptableObj : ScriptableObject
 
     [Header("Audio")]
     [SerializeField] AudioClip[] arrayClips;
-    [SerializeField] AudioClip clip;
 
     public float Volume => volume;
     public float Pitch => pitch;
@@ -20,7 +19,6 @@ public class AudioScriptableObj : ScriptableObject
     public bool RandomPitch => _randomPitch;
 
     public AudioClip[] ArraClips => arrayClips;
-    public AudioClip Clip => clip;
 
     void OnValidate() => pitch = Mathf.Max(pitch, _minPitch);
 }

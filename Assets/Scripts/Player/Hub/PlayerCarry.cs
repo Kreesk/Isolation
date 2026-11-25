@@ -25,7 +25,7 @@ public sealed class PlayerCarry
     private bool _firstTimeCollected;
     private bool _firstTimeDropped;
 
-    public PlayerCarry(PlayerConfig config, PlayerFear fear)
+    public PlayerCarry(PlayerConfig config, PlayerFear fear, PlayerSounds sounds)
     {
         _config = config;
         _fear = fear;

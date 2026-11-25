@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PlayerHand 
 {
+    private PlayerSounds _sounds;
+
     public readonly Transform Hand;
     public readonly Transform Bag;
     public readonly Transform FullBag;
@@ -16,11 +18,12 @@ public class PlayerHand
 
     private Vector3 _startBagPosition;
     private Tween _bagAnim;
-    public PlayerHand(PlayerConfig config)
+    public PlayerHand(PlayerConfig config, PlayerSounds sounds)
     {
         Hand = config.Hand;
         Bag = config.Garbage;
         FullBag = config.FullBag;
+        _sounds = sounds;
 
         _startBagPosition = Bag.localPosition;
     }
@@ -39,7 +42,7 @@ public class PlayerHand
         if (!_collectFirstTime)
         {
             OnFirstTimeCollected?.Invoke(1);
-            
+
             _collectFirstTime = true;
         }
 
@@ -58,6 +61,9 @@ public class PlayerHand
     {
         Bag.gameObject.SetActive(!f);
         FullBag.gameObject.SetActive(f);
+
+        if(f)
+            _sounds.PlayAction(PlayerActions.FullBag);
     }
 
     public void AnimateBag() =>  _bagAnim = Tween.ShakeLocalPosition(Bag, Vector3.down*0.05f, 1, frequency: 2f);
