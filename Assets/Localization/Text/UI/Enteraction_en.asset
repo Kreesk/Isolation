@@ -50,6 +50,10 @@ MonoBehaviour:
     m_Localized: Already have a bag
     m_Metadata:
       m_Items: []
+  - m_Id: 6403891377426432
+    m_Localized: Not enough space
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

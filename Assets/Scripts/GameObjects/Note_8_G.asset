@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f99d72edf0798ee498b271a5cd9fb397, type: 3}
-  m_Name: Note_10
+  m_Name: Note_8_G
   m_EditorClassIdentifier: Assembly-CSharp::PaperInfo
   _indexPaper: 2
   _text:
     m_TableReference:
       m_TableCollectionName: GUID:618129ca0c63c034993e09e51c102cb3
     m_TableEntryReference:
-      m_KeyId: 5612847139643392
+      m_KeyId: 531308957696
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   _fear: 15
   _jumpscareType:
-    _id: 1
+    _id: 0
     jumpscareType: 1
   references:
     version: 2
