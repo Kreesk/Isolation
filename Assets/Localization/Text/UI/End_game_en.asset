@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: End_game_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 0fa41eabb8565c440a299ec7b748330d, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 5672894464
+    m_Localized: End game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 612580294656
+    m_Localized: Correctional labor completed in full. No complaints.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41060876148736
+    m_Localized: CLOSED
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40944144474112
+    m_Localized: NOT COMPLETED
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40611376783360
+    m_Localized: SERVED
+    m_Metadata:
+      m_Items: []
+  - m_Id: 702980128768
+    m_Localized: Required volume of work not completed. Sentence converted to imprisonment.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 710970277888
+    m_Localized: 'Convict deceased. Cause of death: acute heart failure. Case closed.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 717496614912
+    m_Localized: Correctional labor completed ahead of schedule. Station recognized
+      as exemplary.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41148058951680
+    m_Localized: RELEASED
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

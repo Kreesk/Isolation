@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bafbb34848f3d1046864890edd69b9d4, type: 3}
+  m_Name: Drop
+  m_EditorClassIdentifier: Assembly-CSharp::AudioScriptableObj
+  volume: 0.05
+  pitch: 1
+  _minPitch: 0.8
+  _randomPitch: 1
+  arrayClips:
+  - {fileID: 8300000, guid: 3fcfe06e1c8c3554d8d2b6ab3ce9714a, type: 3}
+  - {fileID: 8300000, guid: fc95a7c26d75fc949878e7aff2278675, type: 3}
+  - {fileID: 8300000, guid: 6e811e4a324c0ad40a43b0be5f70ae47, type: 3}
+  - {fileID: 8300000, guid: 5fe1345bb003ec34681df486170802bc, type: 3}
+  clip: {fileID: 8300000, guid: 6e3ae2ca23a45944d9df87f9b31ea5e2, type: 3}

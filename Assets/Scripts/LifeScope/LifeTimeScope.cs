@@ -1,0 +1,47 @@
+using Assets.Scripts.Inputmanager;
+using Assets.Scripts.Player.Hub;
+using UnityEngine;
+using VContainer;
+using VContainer.Unity;
+
+public class LifeTimeScope : LifetimeScope
+{
+    [SerializeField] AudioPool _pool;
+
+    [SerializeField] PlayerConfig _playerConfig;
+    [SerializeField] UIConfig _uiConfig;
+    [SerializeField] BackgroundSounds _backgroundSounds;
+    protected override void Configure(IContainerBuilder builder)
+    {
+        builder.RegisterEntryPoint<InputHub>().As<IInputModeSwitch>().AsSelf();
+        builder.RegisterEntryPoint<PlayerInput>().As<IPlayerInput>();
+        builder.RegisterEntryPoint<UIInput>().As<IUInput>();
+
+        builder.RegisterEntryPoint<AudioService>().As<IAudioService>();
+
+        _playerConfig.Load();
+        builder.RegisterInstance(_playerConfig);
+        builder.RegisterInstance(_uiConfig);
+        builder.RegisterInstance(_pool);
+        builder.RegisterInstance(_backgroundSounds);
+        _backgroundSounds.SetIgnore();
+
+        builder.Register<PlayerCamera>(Lifetime.Singleton);
+        builder.Register<PlayerMovement>(Lifetime.Singleton);
+        builder.Register<PlayerInteract>(Lifetime.Singleton);
+
+        builder.Register<PlayerHit>(Lifetime.Singleton);
+        builder.Register<PlayerMotor>(Lifetime.Singleton);
+        builder.Register<PlayerStates>(Lifetime.Singleton);
+        builder.Register<PlayerCarry>(Lifetime.Singleton);
+        builder.Register<PlayerHand>(Lifetime.Singleton);
+        builder.Register<PlayerFear>(Lifetime.Singleton);
+
+        builder.RegisterComponentInHierarchy<HeadBobingEffect>();
+        builder.RegisterComponentInHierarchy<PlayerUI>();
+        builder.RegisterComponentInHierarchy<Menu>();
+
+        builder.RegisterComponentInHierarchy<PlayerSounds>();
+        builder.RegisterComponentInHierarchy<PlayerHub>();
+    }
+}
