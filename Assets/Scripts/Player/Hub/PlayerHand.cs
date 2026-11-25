@@ -38,7 +38,8 @@ public class PlayerHand
         if (Occupied)return false;
         if (!_collectFirstTime)
         {
-            OnFirstTimeCollected?.Invoke(0);
+            OnFirstTimeCollected?.Invoke(1);
+            
             _collectFirstTime = true;
         }
 

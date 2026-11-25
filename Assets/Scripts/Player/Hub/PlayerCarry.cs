@@ -44,7 +44,7 @@ public sealed class PlayerCarry
 
         if (!_firstTimeCollected)
         {
-            OnFirstCollected?.Invoke(1);
+            OnFirstCollected?.Invoke(2);
             _firstTimeCollected = true;
         }
 
@@ -64,7 +64,7 @@ public sealed class PlayerCarry
 
         if (!_firstTimeDropped)
         {
-            OnFirstDropped?.Invoke(2);
+            OnFirstDropped?.Invoke(3);
             _firstTimeDropped = true;
         }
 

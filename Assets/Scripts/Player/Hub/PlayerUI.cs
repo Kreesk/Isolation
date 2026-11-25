@@ -114,9 +114,9 @@ public class PlayerUI : MonoBehaviour
         _staminaImage = ui.Player.Stamina;
         _scoreTotal = ui.Scores.ScoreTotal; _scoreDay = ui.Scores.ScoreDay; _scoreTotalCollected = ui.Scores.ScoreTotalCollected; _scoreTotalPaperCollected = ui.Scores.ScoreTotalPaperCollected;
         _items = ui.Map.TotalItems; _spawnLocation = ui.Map.Spawn; _garbageTexture = ui.Map.GarbageTexture; _heartBeating = ui.Map.HeartBeating; _system = ui.Map.System; _startGameCanvas = ui.Map.StartCanvas; _durationStart = ui.Map.Duration;
-        _tutorial = ui.Tutorial.Text; _tutorials = ui.Tutorial.Prompts; _tutorialPanel = ui.Tutorial.Panel; _acceptedTutorial = ui.Tutorial.Enabled;
         _paper.SetCurrent(0);
         _endingPanel = _endingRefs.EndingPanel; _currentEndingText = _endingRefs.CurrentText; _currentStampText = _endingRefs.CurrentStampText; _endingStampPanel = ui.Ending.EndingStampPanel;
+        _tutorialPanel = ui.Tutorial.Panel; _tutorial = ui.Tutorial.Text; _tutorials = ui.Tutorial.Prompts;
 
         _timerCounter.Pause();
 
@@ -201,6 +201,7 @@ public class PlayerUI : MonoBehaviour
 
     public void SetTutorial()
     {
+        PlayerPrefs.DeleteKey("AcceptedTutorial");
         int i = PlayerPrefs.GetInt("AcceptedTutorial", 0);
 
         _acceptedTutorial = (i == 1);
@@ -419,18 +420,6 @@ public class PlayerUI : MonoBehaviour
         Resume();
     }
 
-    public void RestartShift()
-    {
-        ShowTutorialText(0);
-        _scoreDay.text = _day.ToString();
-        
-        _locator.RestartLocator();
-        SetLocator(_day - 1);
-        Reset();
-        _states.ResetStamina();
-        ResumeGameplay();
-    }
-
     private void Reset()
     {
         _timerCounter.SetTimerBack();
@@ -503,7 +492,7 @@ public class PlayerUI : MonoBehaviour
         _tutorialPanel.SetActive(!_acceptedTutorial);
         if(!_tutorialPanel.activeSelf)return;
 
-        if(index == 2)
+        if(index == 3)
         {
             _acceptedTutorial = true;
             _tutorialPanel.SetActive(false);
