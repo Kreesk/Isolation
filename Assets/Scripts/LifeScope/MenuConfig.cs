@@ -93,12 +93,13 @@ public sealed class LanguageRefs
 
     public void Tick()
     {
-        Rect target = _background.uvRect;
+        Vector2 delta = new Vector2(0.01f, 0.005f) * Time.unscaledDeltaTime;
+        Rect t = _background.uvRect;
 
-        target.x -= 0.01f * Time.unscaledDeltaTime;
-        target.y -= 0.005f * Time.unscaledDeltaTime;
+        t.x = Mathf.Repeat(t.x + delta.x, 1f);
+        t.y = Mathf.Repeat(t.y + delta.y, 1f);
 
-        _background.uvRect = target;
+        _background.uvRect = t;
     }
 }
 [System.Serializable]

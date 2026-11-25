@@ -42,6 +42,8 @@ public class Menu : MonoBehaviour
         }
 
         _uiConfig.Menu.Pause.SetActive(true);
+        _uiConfig.Menu.GetCurrentBackground(0);
+
         _uiConfig.Menu.Options.SetActive(false);
         _uiConfig.Menu.Devs.SetActive(false);
 
@@ -90,5 +92,19 @@ public class Menu : MonoBehaviour
     {
         _mode.SetGameplay();
         Time.timeScale = 1f;
+    }
+
+    void Update()
+    {
+        if(_uiConfig == null) return;
+        if(!_uiConfig.Menu.Background.isActiveAndEnabled)return;
+
+        Vector2 delta = new Vector2(0.01f, 0.005f) * Time.unscaledDeltaTime;
+        Rect t = _uiConfig.Menu.Background.uvRect;
+
+        t.x = Mathf.Repeat(t.x + delta.x, 1f);
+        t.y = Mathf.Repeat(t.y + delta.y, 1f);
+
+        _uiConfig.Menu.Background.uvRect = t;
     }
 }

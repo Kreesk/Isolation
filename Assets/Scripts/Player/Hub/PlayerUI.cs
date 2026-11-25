@@ -19,6 +19,7 @@ public class PlayerUI : MonoBehaviour
     private MessageRefs _message;
     private PaperRefs _paper;
     private EndingRefs _endingRefs;
+    private MenuRefs _menuRefs;
 
 
     private PlayerInteract _interact;
@@ -106,6 +107,7 @@ public class PlayerUI : MonoBehaviour
         _fear = fear;
         _paper = ui.Paper;
         _endingRefs = ui.Ending;
+        _menuRefs = ui.Menu;
 
         _timerCounter = ui.Timer.Counter; _timerText = ui.Timer.Text;
         _interaction = ui.Messages.MessageObject;  _hold = ui.Messages.Hold; _message = ui.Messages;
@@ -117,6 +119,9 @@ public class PlayerUI : MonoBehaviour
         _endingPanel = _endingRefs.EndingPanel; _currentEndingText = _endingRefs.CurrentText; _currentStampText = _endingRefs.CurrentStampText; _endingStampPanel = ui.Ending.EndingStampPanel;
 
         _timerCounter.Pause();
+
+        if(_menuRefs.GetCurrentBackground(1).gameObject.activeSelf)
+        _menuRefs.GetCurrentBackground(1);
 
         _input.Interact += Interact;
 
@@ -228,6 +233,7 @@ public class PlayerUI : MonoBehaviour
     public void ShowScore()
     {
         QuotaService(_currentQuotaCollected);
+        _menuRefs.GetCurrentBackground(2);
 
         if(_mode == null)return;
 
@@ -529,6 +535,7 @@ public class PlayerUI : MonoBehaviour
             
 
             _endingPanel.SetActive(true);
+            _menuRefs.GetCurrentBackground(1);
 
             Pause();
         }

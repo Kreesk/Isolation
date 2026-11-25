@@ -99,6 +99,7 @@ public sealed class MenuRefs
     [SerializeField] GameObject _options;
     [SerializeField] GameObject _devs;
     [SerializeField] GameplaySettings _gameplaySettings;
+    [SerializeField] RawImage[] _background;
 
     public GameObject[] MenuComponents => _menu;
     public GameObject[] GameplayComponents => _gameplay;
@@ -106,6 +107,9 @@ public sealed class MenuRefs
     public GameObject Options => _options;
     public GameObject Devs => _devs;
     public GameplaySettings GameplaySettings => _gameplaySettings;
+    public RawImage Background {get; private set;}
+
+    public RawImage GetCurrentBackground(int i) => Background = _background[i] ;
 }
 [Serializable]
 public sealed class ScoreRefs
