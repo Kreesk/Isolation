@@ -49,8 +49,9 @@ public class ItemsCollect : AudioAbs, IInteract
     {
         if(_item == null)return InteractResult.Failed;
         if(!hand.Occupied)return InteractResult.NoBag;
-        if(carry.Check(_item) != InteractResult.Success)return InteractResult.FullBag;
-        return InteractResult.Success;
+        
+        InteractResult r = carry.Check(_item);
+        return r;
     }
 
     public InteractResult Interact(PlayerCarry carry, PlayerHand hand)

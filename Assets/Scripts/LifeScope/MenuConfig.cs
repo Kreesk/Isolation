@@ -48,7 +48,7 @@ public sealed class LanguageRefs
         _languageCanvas.gameObject.SetActive(PlayerPrefs.GetInt(SetLanguageKey, 1) == 1);
         _disclaimerCanvas.gameObject.SetActive(PlayerPrefs.GetInt(SetLanguageKey, 1) == 0);
         if(_disclaimerCanvas.gameObject.activeSelf)
-            _disclaimerTween = Tween.Alpha(_disclaimerCanvas, 1, _duration*14);
+            _disclaimerTween = Tween.Alpha(_disclaimerCanvas, 1, _duration*14, useUnscaledTime: true);
 
         _system.firstSelectedGameObject = _languageCanvas.gameObject.activeSelf? _currentButton : _disclaimerCanvas.gameObject;
     }
@@ -58,12 +58,12 @@ public sealed class LanguageRefs
         if(!_languageCanvas.gameObject.activeSelf)return;
         
         _languageCanvas.interactable = false;
-        _languageTween = Tween.Alpha(_languageCanvas, 0f, _duration)
+        _languageTween = Tween.Alpha(_languageCanvas, 0f, _duration, useUnscaledTime: true)
         .OnComplete(() => 
         {
             _languageCanvas.gameObject.SetActive(false);
             _disclaimerCanvas.gameObject.SetActive(true);
-            _disclaimerTween = Tween.Alpha(_disclaimerCanvas, 1f, _duration).OnComplete(() =>
+            _disclaimerTween = Tween.Alpha(_disclaimerCanvas, 1f, _duration, useUnscaledTime: true).OnComplete(() =>
             {
                 _system.firstSelectedGameObject = _disclaimerCanvas.gameObject;
             });  
@@ -73,12 +73,12 @@ public sealed class LanguageRefs
     {
         _disclaimerCanvas.interactable = false;
 
-        _disclaimerTween = Tween.Alpha(_disclaimerCanvas, 0f, _duration).OnComplete(() =>
+        _disclaimerTween = Tween.Alpha(_disclaimerCanvas, 0f, _duration, useUnscaledTime: true).OnComplete(() =>
         {
             _disclaimerCanvas.gameObject.SetActive(false);
             _menuCanvas.gameObject.SetActive(true);
 
-            _disclaimerTween = Tween.Alpha(_menuCanvas, 1f, _duration);
+            _disclaimerTween = Tween.Alpha(_menuCanvas, 1f, _duration, useUnscaledTime: true);
         });
     }
  
@@ -95,8 +95,8 @@ public sealed class LanguageRefs
     {
         Rect target = _background.uvRect;
 
-        target.x -= 0.01f * Time.deltaTime;
-        target.y -= 0.005f * Time.deltaTime;
+        target.x -= 0.01f * Time.unscaledDeltaTime;
+        target.y -= 0.005f * Time.unscaledDeltaTime;
 
         _background.uvRect = target;
     }

@@ -2,7 +2,7 @@ using Assets.Scripts.Inputmanager;
 using UnityEngine.Localization;
 public enum InteractResult
 {
-    None ,Success, NoBag, FullBag, EmptyBag, InHand, Failed
+    None ,Success, NoBag, FullBag, EmptyBag, InHand, Failed, NoSpace
 }
 public interface IInteract 
 {

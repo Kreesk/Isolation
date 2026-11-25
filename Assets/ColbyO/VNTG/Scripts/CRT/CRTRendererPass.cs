@@ -124,7 +124,7 @@ namespace ColbyO.VNTG.CRT
             float refreshRate = settings.RefreshRate.value;
             float targetInterval = refreshRate > 0f ? (1.0f / refreshRate) : 0.016f;
 
-            state.accumulatedTime += Time.deltaTime;
+            state.accumulatedTime += Time.unscaledDeltaTime;
 
             bool shouldRefresh = false;
 
@@ -194,6 +194,9 @@ namespace ColbyO.VNTG.CRT
                     data.material.SetFloat("_ForceRefresh", data.forceRefresh);
                     data.material.SetFloat("_ShouldRefresh", data.shouldRefresh);
                     data.material.SetInt("_InterlaceOffset", data.interlaceOffset);
+
+                    data.material.SetFloat("_UnscaledTime", Time.unscaledTime);
+                    data.material.SetFloat("_UnscaledDeltaTime", Time.unscaledDeltaTime);
 
                     UpdateMaterialWithSettings(data.material, data.settings);
 
