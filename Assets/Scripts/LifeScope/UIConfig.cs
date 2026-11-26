@@ -115,34 +115,55 @@ public sealed class MenuRefs
 public sealed class ScoreRefs
 {
     
-[Serializable]
-private struct FearRefs
-{
-    [SerializeField] LocalizedString _total;
-    [SerializeField] FearState _state;
+    [Serializable]
+    private struct FearRefs
+    {
+        [SerializeField] LocalizedString _total;
+        [SerializeField] FearState _state;
 
-    public LocalizedString Text => _total;
-    public FearState State => _state;
-}
+        public LocalizedString Text => _total;
+        public FearState State => _state;
+    }
+    [Serializable]
+    private struct ReprimandRefs
+    {
+        [SerializeField] LocalizedString _text;
+        [SerializeField] QuotaState _quotaState;
+
+        public LocalizedString Text => _text;
+        public QuotaState QuotaState => _quotaState; 
+    }
+
     [SerializeField] FearRefs[] _fears;
+    [SerializeField] ReprimandRefs[] _quota;
     [SerializeField] GameObject _scoreTotal;
 
     [SerializeField] TextMeshProUGUI _scoreTotalPaperCollected;
     [SerializeField] TextMeshProUGUI _scoreTotalCollected;
     [SerializeField] TextMeshProUGUI _scoreDay;
     [SerializeField] TextMeshProUGUI _fearStateText;
+    [SerializeField] TextMeshProUGUI _quotaStateText;
 
     public GameObject ScoreTotal => _scoreTotal;
     public TextMeshProUGUI ScoreTotalCollected => _scoreTotalCollected;
     public TextMeshProUGUI ScoreTotalPaperCollected => _scoreTotalPaperCollected;
     public TextMeshProUGUI ScoreDay => _scoreDay;
     public TextMeshProUGUI FearStateText => _fearStateText;
+    public TextMeshProUGUI QuotaStateText => _quotaStateText;
 
     public LocalizedString GetFearState(FearState state)
     {
         for (int i = 0; i < _fears.Length; i++)
             if(_fears[i].State == state)
                 return _fears[i].Text;
+
+        return null;
+    }
+    public LocalizedString GetQuotaState(QuotaState state)
+    {
+        for (int i = 0; i < _quota.Length; i++)
+            if(_quota[i].QuotaState == state)
+                return _quota[i].Text;
 
         return null;
     }

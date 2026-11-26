@@ -86,10 +86,12 @@ public class PlayerUI : MonoBehaviour
     private LocalizedString _currentStampLocalized;
     private LocalizedString _currentFearStateLocalized;
 
+    private LocalizedString _currentQuotaStateLocalized;
+    private TextMeshProUGUI _currentQuotaText;
+
     private bool _allCollected;
-    private bool _quotaCollected;
     private bool _interacted;
-    private bool _currentQuotaCollected;
+    private QuotaState _quotaState;
 
 
     private float _durationStart;
@@ -120,12 +122,12 @@ public class PlayerUI : MonoBehaviour
         _timerCounter = ui.Timer.Counter; _timerText = ui.Timer.Text;
         _interaction = ui.Messages.MessageObject;  _hold = ui.Messages.Hold; _message = ui.Messages;
         _staminaImage = ui.Player.Stamina;
-        _scoreTotal = _scoreRefs.ScoreTotal; _scoreDay = _scoreRefs.ScoreDay; _scoreTotalCollected = _scoreRefs.ScoreTotalCollected; _scoreTotalPaperCollected = _scoreRefs.ScoreTotalPaperCollected; _fearStateText = _scoreRefs.FearStateText;
+        _scoreTotal = _scoreRefs.ScoreTotal; _scoreDay = _scoreRefs.ScoreDay; _scoreTotalCollected = _scoreRefs.ScoreTotalCollected; _scoreTotalPaperCollected = _scoreRefs.ScoreTotalPaperCollected; _fearStateText = _scoreRefs.FearStateText; _currentQuotaText = _scoreRefs.QuotaStateText;
         _items = _mapRefs.TotalItems; _spawnLocation = _mapRefs.Spawn; _garbageTexture = _mapRefs.GarbageTexture; _heartBeating = ui.Map.HeartBeating; _system =_mapRefs.System; _startGameCanvas = _mapRefs.StartCanvas; _durationStart = _mapRefs.Duration;
         _paper.SetCurrent(0);
         _endingPanel = _endingRefs.EndingPanel; _currentEndingText = _endingRefs.CurrentText; _currentStampText = _endingRefs.CurrentStampText; _endingStampPanel = ui.Ending.EndingStampPanel;
         _tutorialPanel = ui.Tutorial.Panel; _tutorial = ui.Tutorial.Text; _tutorials = ui.Tutorial.Prompts;
-        ShowStateText(FearState.Fine);
+        ShowStateText(FearState.Fine); _quotaState = QuotaState.NotCollected;
 
         _timerCounter.Pause();
 
@@ -238,13 +240,12 @@ public class PlayerUI : MonoBehaviour
     {
         _garbageTexture.transform.localPosition = _lowerPosition;
 
-        if(_allCollected && _quotaCollected)
+        if(_allCollected)
             ShowScore();
     }
 
     public void ShowScore()
     {
-        QuotaService(_currentQuotaCollected);
         _menuRefs.GetCurrentBackground(2);
 
         if(_mode == null)return;
@@ -252,20 +253,12 @@ public class PlayerUI : MonoBehaviour
         ClearPrompt();
         _interaction.gameObject.SetActive(false);
 
-        if (_day == 2 || _day == 3)
-        {
-            if (!_quotaCollected)
-            {
-                _scoreTotal.SetActive(false);
-                ShowEnding(1);
-                return;
-            }
-        }
+        if(CheckQuotaEnding())return;
         if (_scoreTotal.activeSelf) return;
 
         _scoreTotal.SetActive(true);
-          
         Pause();
+        
     }
 
     private void OnCollected()
@@ -399,27 +392,70 @@ public class PlayerUI : MonoBehaviour
         if(SetLocator(_day - 1))
             ResumeGameplay();   
     }
-
-    private void QuotaService(bool b)
+    private void ClearQuotaText()
     {
-        _currentQuotaCollected = b;
-        if (_day == 1)
+        if(_currentQuotaStateLocalized != null)
         {
-            if(!b)_sounds.PlayAction(PlayerActions.QuotaNotCollected);
-            _quotaCollected = true;
+            _currentQuotaStateLocalized.StringChanged -= LocalizedQuotaState;
+            _currentQuotaStateLocalized = null;
         }
-        else
+    }
+
+    private void QuotaService(QuotaState state)
+    {
+        _quotaState = state;
+        ClearQuotaText();
+
+        LocalizedString str = _scoreRefs.GetQuotaState(state);
+        if(str != null)
         {
-            if (_currentQuotaCollected)
+            _currentQuotaStateLocalized = str;
+            _currentQuotaStateLocalized.StringChanged += LocalizedQuotaState;
+
+        }
+    }
+
+    private bool CheckQuotaEnding()
+    {
+        bool quotaCompleted = _quotaState == QuotaState.Collected || _quotaState == QuotaState.FullShiftCollected;
+
+        if(_day == 1)
+        {
+            if (!quotaCompleted)
             {
-                Debug.Log("WELL DONE YOU COLLECTED");
-                _quotaCollected = true;
+                ShowQuotaRaise(QuotaState.NotCollected);
+                return true;
             }
             else
             {
-                _quotaCollected = false;
+                ShowQuotaRaise(QuotaState.Collected);
+                return true;
             }
         }
+
+        if(_day == 2 || _day == 3)
+        {
+            if (!quotaCompleted)
+            {
+                ShowEnding(1);
+                _scoreTotal.SetActive(false);
+                return false;
+            }
+            else
+            {
+                ShowQuotaRaise(_quotaState);
+                return true;
+            }
+        }
+        return true;
+    }
+
+    private void ShowQuotaRaise(QuotaState s)
+    {
+        QuotaService(s);
+        _scoreTotal.SetActive(true);
+
+        Pause();
     }
 
     void ResumeGameplay()
@@ -443,13 +479,12 @@ public class PlayerUI : MonoBehaviour
     {
         if(index == 3)
         {
-            GoodEnding();
+            ShowEnding(0);
             return false;
         }
 
         _allCollected = false;
-        _quotaCollected = false;
-        _currentQuotaCollected = false;
+        _quotaState = QuotaState.NotCollected;
         if (_locator != null)
         {
             _locator.Changed -= GarbageText;
@@ -472,15 +507,6 @@ public class PlayerUI : MonoBehaviour
 
         return true;
     }
-
-    private void GoodEnding()
-    {
-        if (_quotaCollected)
-        {
-            ShowEnding(0);
-        }
-    }
-
     private void ShowPapperText(LocalizedString p, int s)
     {
         ClearPaperText();
@@ -536,7 +562,7 @@ public class PlayerUI : MonoBehaviour
             _currentStampLocalized.StringChanged += LocalizedStampEnding;
 
             
-
+            _scoreTotal.SetActive(false);
             _endingPanel.SetActive(true);
             _menuRefs.GetCurrentBackground(1);
 
@@ -572,6 +598,7 @@ public class PlayerUI : MonoBehaviour
     private void LocalizedEndingText(string v) => _currentEndingText.text = v;
     private void LocalizedStampEnding(string v) => _currentStampText.text = v;
     private void LocalizedFearState(string v) => _fearStateText.text = v;
+    private void LocalizedQuotaState(string v) => _currentQuotaText.text = v;
 
     private void SetPitch() => _heartBeating.pitch = _fear.FearNormalized >= 0.8f? 1.2f : _fear.FearNormalized >= 0.3f? 1f : 0.8f;
     private void SetVolume() => _heartBeating.volume = _fear.FearNormalized;

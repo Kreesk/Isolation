@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 public enum PlayerActions
 {
-    FullBag, TutorialNotification, QuotaNotCollected
+    FullBag, TutorialNotification
 }
 [System.Serializable]
 public struct PlayerActionSounds

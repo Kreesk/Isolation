@@ -1,7 +1,7 @@
 
 using System;
 using UnityEngine;
-
+public enum QuotaState{FullShiftCollected , Collected, NotCollected, WarningToCollect}
 public class GarbageLocator : MonoBehaviour
 {
     ItemsCollect[] _items;
@@ -12,7 +12,7 @@ public class GarbageLocator : MonoBehaviour
     int _remainingPaper;
 
     bool _inited;
-    private bool _quotaCollected;
+    public QuotaState State {get; private set;}
 
     public int TotalItem => _items.Length;
     public int TotalPaper => _info.Length;
@@ -21,7 +21,7 @@ public class GarbageLocator : MonoBehaviour
 
 
     public event Action AllCollected;
-    public event Action<bool> QuotaCollected;
+    public event Action<QuotaState> QuotaCollected;
 
     void Awake() => Init();
 
@@ -57,19 +57,12 @@ public class GarbageLocator : MonoBehaviour
     private void OnCollected(ItemsCollect _)
     {
         _remainingItem--;
-        Changed?.Invoke(_remainingItem, TotalItem);
-
-        if(!_quotaCollected &&_remainingItem <= _quota)
-        {
-            QuotaCollected?.Invoke(true);
-            _quotaCollected = true;
-        }
-
-        if (_remainingItem <= 0)
+        Changed?.Invoke(_remainingItem, TotalItem);     
+        UpdateState();
+        if(_remainingItem <= 0)
         {
             AllCollected?.Invoke();
-            QuotaCollected?.Invoke(true);
-        }       
+        }
     }
 
     public void OnCollectedPaper(PapperShow c)
@@ -85,8 +78,6 @@ public class GarbageLocator : MonoBehaviour
         
         _remainingItem = _items.Length;
         _quota = _items.Length/2;
-
-        _quotaCollected = false;
         
         foreach (var item in _items)
         {
@@ -98,5 +89,20 @@ public class GarbageLocator : MonoBehaviour
             item.gameObject.SetActive(true);
             item.enabled = true;
         }
+    }
+    private QuotaState Evaluate(int remain)
+    {
+        if(remain <= _quota)return QuotaState.Collected;
+        if(remain <= 0)return QuotaState.FullShiftCollected;
+
+        return QuotaState.NotCollected;
+    }
+    public void UpdateState()
+    {
+        QuotaState s = Evaluate(_remainingItem);
+        
+        State = s;
+
+        QuotaCollected?.Invoke(State);
     }
 }
