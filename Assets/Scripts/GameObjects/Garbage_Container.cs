@@ -1,4 +1,5 @@
 using Assets.Scripts.Inputmanager;
+using PrimeTween;
 using UnityEngine;
 using UnityEngine.Localization;
 
@@ -12,6 +13,7 @@ public class Garbage_Container : AudioAbs, IInteract
 
     public Outline Outline => _outline;
 
+    Tween _container;
     public InteractResult Check(PlayerCarry carry, PlayerHand hand)
     {
         if(!hand.Occupied)return InteractResult.NoBag;
@@ -26,8 +28,15 @@ public class Garbage_Container : AudioAbs, IInteract
         if(r != InteractResult.Success)return r;
 
         carry.FullDrop();
-        hand.DropBag();
         PlayDefaultClips();
+        AnimateContainer();
+        hand.AnimateThrow(transform);
         return InteractResult.Success;
     }
+
+    private void AnimateContainer()
+    {
+        Vector3 startpos = transform.position;
+        _container = Tween.Position(transform, startpos + new Vector3(0, 0 ,-0.01f), 0.2f, Ease.InOutCubic, cycles: 2, CycleMode.Yoyo);
+    }   
 }
