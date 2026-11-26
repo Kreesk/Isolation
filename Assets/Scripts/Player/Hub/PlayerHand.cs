@@ -66,8 +66,9 @@ public class PlayerHand
     {
         Bag.gameObject.SetActive(t);
         Bag.gameObject.layer = _startMask;
-        
+
         FullBag.gameObject.SetActive(false);
+        FullBag.gameObject.layer = _startMask;
 
         Bag.localPosition = _startBagPosition;
         FullBag.localPosition = _startFullBagPosition;
