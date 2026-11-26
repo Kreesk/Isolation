@@ -92,8 +92,8 @@ public class GarbageLocator : MonoBehaviour
     }
     private QuotaState Evaluate(int remain)
     {
-        if(remain <= _quota)return QuotaState.Collected;
         if(remain <= 0)return QuotaState.FullShiftCollected;
+        if(remain <= _quota)return QuotaState.Collected;
 
         return QuotaState.NotCollected;
     }
