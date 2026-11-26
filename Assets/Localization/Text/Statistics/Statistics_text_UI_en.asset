@@ -46,6 +46,18 @@ MonoBehaviour:
     m_Localized: "\u0421ontinue "
     m_Metadata:
       m_Items: []
+  - m_Id: 7008907142320128
+    m_Localized: Fine
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7008995969290240
+    m_Localized: Critical
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7009205772570624
+    m_Localized: Insane
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

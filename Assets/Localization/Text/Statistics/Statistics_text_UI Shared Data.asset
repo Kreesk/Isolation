@@ -43,6 +43,18 @@ MonoBehaviour:
     m_Key: continue
     m_Metadata:
       m_Items: []
+  - m_Id: 7008907142320128
+    m_Key: fine_state
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7008995969290240
+    m_Key: critical_state
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7009205772570624
+    m_Key: insane_state
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

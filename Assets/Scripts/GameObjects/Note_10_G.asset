@@ -22,7 +22,7 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  _fear: 15
+  _fear: 25
   _jumpscareType:
     _id: 1
     jumpscareType: 1
