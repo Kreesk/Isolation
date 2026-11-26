@@ -38,5 +38,6 @@ public class Garbage_Container : AudioAbs, IInteract
     {
         Vector3 startpos = transform.position;
         _container = Tween.Position(transform, startpos + new Vector3(0, 0 ,-0.01f), 0.2f, Ease.InOutCubic, cycles: 2, CycleMode.Yoyo);
-    }   
+    }
+    void OnDisable() => _container.Stop();
 }
