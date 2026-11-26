@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Item_heapTrash
   m_EditorClassIdentifier: Assembly-CSharp::ItemWeight
   ItemName: heapTrash
-  Weight: 1
+  Weight: 5
   ALotOfGarbage: 1
   Phase: 1
