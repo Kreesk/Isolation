@@ -55,6 +55,10 @@ MonoBehaviour:
     m_Key: insane_state
     m_Metadata:
       m_Items: []
+  - m_Id: 7090458798542848
+    m_Key: warning
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
