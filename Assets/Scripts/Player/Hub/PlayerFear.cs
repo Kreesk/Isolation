@@ -69,8 +69,7 @@ public class PlayerFear
     private void UpdateState()
     {
         FearState s = Evaluate(FearNormalized);
-        if(s == State)return;
-
+        
         State = s;
 
         OnFearStateChange?.Invoke(State);

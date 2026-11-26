@@ -125,6 +125,7 @@ public class PlayerUI : MonoBehaviour
         _paper.SetCurrent(0);
         _endingPanel = _endingRefs.EndingPanel; _currentEndingText = _endingRefs.CurrentText; _currentStampText = _endingRefs.CurrentStampText; _endingStampPanel = ui.Ending.EndingStampPanel;
         _tutorialPanel = ui.Tutorial.Panel; _tutorial = ui.Tutorial.Text; _tutorials = ui.Tutorial.Prompts;
+        ShowStateText(FearState.Fine);
 
         _timerCounter.Pause();
 
