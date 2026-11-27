@@ -23,6 +23,7 @@ public class PlayerUI : MonoBehaviour
     private MenuRefs _menuRefs;
     private MapRefs _mapRefs;
     private ScoreRefs _scoreRefs;
+    private VolumeEffects _volumeEffects;
 
 
     private PlayerInteract _interact;
@@ -96,8 +97,8 @@ public class PlayerUI : MonoBehaviour
 
     private float _durationStart;
     private CanvasGroup _startGameCanvas;   
-    private EventSystem _system;
     private Tween _startGameTween;
+    private Tween _badEndingExposure;
 
 
     [Inject]
@@ -118,12 +119,15 @@ public class PlayerUI : MonoBehaviour
         _mapRefs = ui.Map;
         _scoreRefs = ui.Scores;
         _sounds = sounds;
+        _volumeEffects = ui.VolumeEffects;
+
+        _volumeEffects.Initialize();
 
         _timerCounter = ui.Timer.Counter; _timerText = ui.Timer.Text;
         _interaction = ui.Messages.MessageObject;  _hold = ui.Messages.Hold; _message = ui.Messages;
         _staminaImage = ui.Player.Stamina;
         _scoreTotal = _scoreRefs.ScoreTotal; _scoreDay = _scoreRefs.ScoreDay; _scoreTotalCollected = _scoreRefs.ScoreTotalCollected; _scoreTotalPaperCollected = _scoreRefs.ScoreTotalPaperCollected; _fearStateText = _scoreRefs.FearStateText; _currentQuotaText = _scoreRefs.QuotaStateText;
-        _items = _mapRefs.TotalItems; _spawnLocation = _mapRefs.Spawn; _garbageTexture = _mapRefs.GarbageTexture; _heartBeating = ui.Map.HeartBeating; _system =_mapRefs.System; _startGameCanvas = _mapRefs.StartCanvas; _durationStart = _mapRefs.Duration;
+        _items = _mapRefs.TotalItems; _spawnLocation = _mapRefs.Spawn; _garbageTexture = _mapRefs.GarbageTexture; _heartBeating = ui.Map.HeartBeating; _startGameCanvas = _mapRefs.StartCanvas; _durationStart = _mapRefs.Duration;
         _paper.SetCurrent(0);
         _endingPanel = _endingRefs.EndingPanel; _currentEndingText = _endingRefs.CurrentText; _currentStampText = _endingRefs.CurrentStampText; _endingStampPanel = ui.Ending.EndingStampPanel;
         _tutorialPanel = ui.Tutorial.Panel; _tutorial = ui.Tutorial.Text; _tutorials = ui.Tutorial.Prompts;
@@ -147,6 +151,7 @@ public class PlayerUI : MonoBehaviour
         _fear.OnFearChange += GainHeart;
         _fear.FearDrained += DrainHeart;
         _fear.OnFearStateChange += ShowStateText;
+        _fear.OnGetInsane += OnInsane;
 
         if (_locator != null)
         {
@@ -188,8 +193,11 @@ public class PlayerUI : MonoBehaviour
             _fear.OnFearChange -= GainHeart; 
             _fear.FearDrained -= DrainHeart;
             _fear.OnFearStateChange -= ShowStateText;
+            _fear.OnGetInsane -= OnInsane;
         }
         _startGameTween.Stop();
+        _badEndingExposure.Stop();
+        _volumeEffects.Destroy();
     }
     void Start()
     {
@@ -602,6 +610,7 @@ public class PlayerUI : MonoBehaviour
 
     private void SetPitch() => _heartBeating.pitch = _fear.FearNormalized >= 0.8f? 1.2f : _fear.FearNormalized >= 0.3f? 1f : 0.8f;
     private void SetVolume() => _heartBeating.volume = _fear.FearNormalized;
+    private void SetVignette() => _volumeEffects.Vignette.intensity.value = _fear.FearNormalized;
     private void GainHeart()
     {   
         if(_heartBeating == null || _fear == null)return;
@@ -611,6 +620,11 @@ public class PlayerUI : MonoBehaviour
 
         SetPitch();
         SetVolume();
+
+        if(!_volumeEffects.Vignette.active)
+            _volumeEffects.ActiveVignette(true);
+ 
+        SetVignette();
     }
 
     private void DrainHeart()
@@ -623,9 +637,27 @@ public class PlayerUI : MonoBehaviour
 
         SetPitch();
         SetVolume();
+        SetVignette();
         
         if(_heartBeating.volume <= 0)
             _heartBeating.Stop();
+    }
+
+    private void OnInsane()
+    {
+        if(!_volumeEffects.ColorAdjustments.active)
+            _volumeEffects.ActiveColor(true);
+
+        float s = _volumeEffects.ColorAdjustments.postExposure.value;
+        _badEndingExposure = Tween.Custom(0, 1f, duration: 3, t =>
+        {
+            _volumeEffects.ColorAdjustments.postExposure.value = Mathf.Lerp(s, -10, t);
+        }).OnComplete(() =>
+        {
+            ShowEnding(2);
+            _volumeEffects.ActiveColor(false);
+            _volumeEffects.ActiveVignette(false);
+        });
     }
 
     void Update()

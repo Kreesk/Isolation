@@ -9,6 +9,10 @@ public class Menu : MonoBehaviour
     private IInputModeSwitch _mode;
     private UIConfig _uiConfig;
 
+    private bool _vignetteWasActive;
+    private bool _colorWasActive;
+    private bool _effectsSaved;
+
     [Inject]
     public void Construct(IPlayerInput input, IUInput ui, IInputModeSwitch modeSwitch, UIConfig uiConfig)
     {
@@ -51,6 +55,7 @@ public class Menu : MonoBehaviour
         {
             _uiConfig.Menu.GameplayComponents[i].SetActive(false);
         }
+        DisableEffects();
         SetUi();
     }
     public void DisableMenu()
@@ -72,6 +77,7 @@ public class Menu : MonoBehaviour
         {
             _uiConfig.Menu.GameplayComponents[i].SetActive(true);
         }
+        EnableEffects();
         SetGameplay();
     }
 
@@ -92,6 +98,33 @@ public class Menu : MonoBehaviour
     {
         _mode.SetGameplay();
         Time.timeScale = 1f;
+    }
+
+    private void DisableEffects()
+    {
+        var effects = _uiConfig.VolumeEffects;
+
+        if (!_effectsSaved)
+        {
+            _vignetteWasActive = effects.Vignette.active;
+            _colorWasActive = effects.ColorAdjustments.active;
+            _effectsSaved = true;
+        }
+
+        effects.ActiveColor(false);
+        effects.ActiveVignette(false);
+    }
+
+    private void EnableEffects()
+    {
+        if(!_effectsSaved)return;
+
+        var effects = _uiConfig.VolumeEffects;
+
+        effects.ActiveVignette(_vignetteWasActive);
+        effects.ActiveColor(_colorWasActive);
+
+        _effectsSaved = false;
     }
 
     void Update()

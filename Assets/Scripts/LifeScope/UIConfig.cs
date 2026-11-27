@@ -3,6 +3,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Localization;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 [Serializable]
@@ -17,6 +19,7 @@ public sealed class UIConfig
     [SerializeField] MapRefs _mapRefs;
     [SerializeField] Tutorial _tutorial;
     [SerializeField] EndingRefs _endings;
+    [SerializeField] VolumeEffects _volumeEffects;
 
     public PlayerStateRefs Player => _player;
     public MessageRefs Messages => _messages;
@@ -27,6 +30,7 @@ public sealed class UIConfig
     public MapRefs Map => _mapRefs;
     public Tutorial Tutorial => _tutorial;
     public EndingRefs Ending => _endings;
+    public VolumeEffects VolumeEffects => _volumeEffects;
 }
 
 [Serializable]
@@ -224,4 +228,37 @@ public sealed class EndingRefs
         if(_endings == null || i < 0 || i >= _endings.Length)return null;
         return _endings[i];
     }
+}
+[Serializable]
+public sealed class VolumeEffects
+{
+    [SerializeField] Volume _volume;
+    public Volume Volume => _volume;
+
+
+    public Vignette Vignette{get; private set;}
+    public ColorAdjustments ColorAdjustments{get; private set;}
+
+    public void Initialize()
+    {
+        if(_volume == null || _volume.profile == null)return;
+
+        _volume.profile.TryGet(out Vignette vignette);
+        _volume.profile.TryGet(out ColorAdjustments colorAdjustments);
+
+        Vignette = vignette;
+        ColorAdjustments = colorAdjustments;
+    }
+
+    public void Destroy()
+    {
+        if(Vignette != null)
+            Vignette = null;
+
+        if(ColorAdjustments != null)
+            ColorAdjustments = null;
+    }
+
+    public void ActiveVignette(bool active) => Vignette.active = active;
+    public void ActiveColor(bool active) => ColorAdjustments.active = active;
 }
