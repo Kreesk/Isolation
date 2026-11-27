@@ -7,6 +7,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] Animator _enemy;
     [SerializeField] Transform _target;
     [SerializeField] NavMeshAgent _agent;
+    [SerializeField] AudioSource _source;
     [SerializeField] float distance = 2f;
     
 
@@ -19,7 +20,7 @@ public class EnemyMovement : MonoBehaviour
         _agent.isStopped = !t;
     }
 
-    void OnEnable() => _setMovement = true;
+    void OnEnable() => _setMovement = true; 
     void OnDisable() => _setMovement = false;
 
     private void Distanation()
@@ -42,9 +43,17 @@ public class EnemyMovement : MonoBehaviour
         _agent.SetDestination(_target.position);
     }
 
+    private void SetSound()
+    {
+        if(_source.isPlaying)return;
+
+        _source.Play();
+    }
+
     void Update()
     {
         if(!_setMovement)return;
         Distanation();
+        SetSound();
     }
 }
